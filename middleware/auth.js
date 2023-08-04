@@ -46,7 +46,7 @@ function ensureLoggedIn(req, res, next) {
 // Middleware to use to make sure admin has access to a feature
 function ensureAdmin(req, res, next) {
   try {
-    if(!res.locals.user || !res.local.user.is_Admin) {
+    if(!res.locals.user || !res.local.user.is_admin) {
       throw new UnauthorizedError("User is not an admin", 403)
     }else{
       return next()
