@@ -6,14 +6,16 @@ const {
   authenticateJWT,
   ensureLoggedIn,
   ensureAdmin,
+  ensureCorrectUserOrAdmin
 } = require("./auth");
 
 
 const { SECRET_KEY } = require("../config");
 
-const testJwt = jwt.sign({ username: "test", isAdmin: false }, SECRET_KEY);
-const badJwt = jwt.sign({ username: "test", isAdmin: false }, "wrong");
-const adminJwt = jwt.sign({ username: "test", isAdmin: true }, SECRET_KEY);
+const testJwt = jwt.sign({ username: "test", is_admin: false }, SECRET_KEY);
+const badJwt = jwt.sign({ username: "test", is_admin: false }, "wrong");
+const adminJwt = jwt.sign({ username: "test", is_admin: true }, SECRET_KEY);
+
 
 
 describe("authenticateJWT", function () {
@@ -31,7 +33,7 @@ describe("authenticateJWT", function () {
       user: {
         iat: expect.any(Number),
         username: "test",
-        isAdmin: false,
+        is_admin: false,
       },
     });
   });
@@ -84,10 +86,62 @@ describe("ensureLoggedIn", function () {
 
 
 describe('ensureAdmin', function() {
-  const req = {};
-  const res = { locals: {user: { username: "test", is_admin: false }} }
-  const next = function(err) {
-    expect(err).toBe("User is not an admin")
-  }
-  ensureAdmin(req, res, next);
-})
+  test("works when user is an admin", function() {
+    expect.assertions(1);
+    const req = {};
+    const res = { locals: { user: { username: "test", is_admin: true } } };
+    const next = function(err) {
+      expect(err).toBeFalsy();
+    };
+    ensureAdmin(req, res, next);
+  });
+
+  test("throws error when user is not an admin", function() {
+    expect.assertions(1);
+    const req = {};
+    const res = { locals: { user: { username: "test", is_admin: false } } };
+    const next = function(err) {
+      expect(err).toBeTruthy();
+    };
+    ensureAdmin(req, res, next);
+  });
+});
+
+
+describe("ensureCorrectUserOrAdmin", function() {
+  test("works when user is admin", function() {
+    expect.assertions(1);
+    const req = { params: {username: "test"} };
+    const res = { locals: { user: { username: "admin", is_admin: true } } };
+    const next = function(err) {
+      expect(err).toBeFalsy();
+    };
+    ensureCorrectUserOrAdmin(req, res, next);
+  });
+
+  test("works when user is the correct user", function() {
+    expect.assertions(1);
+    const req = { params: { username: "test" } };
+    const res = { locals: { user: { username: "test", is_admin: false } } };
+    const next = function(err) {
+      expect(err).toBeFalsy()
+    };
+    ensureCorrectUserOrAdmin(req, res, next);
+  });
+
+  test("throws error when user is neither admin nor correct user", function() {
+    expect.assertions(1);
+    const req = { params: { username: "otherUser" } };
+    const res = { locals: { user: { username: "test", is_admin: false } } };
+    const next = function(err) {
+      expect(err.message).toBe("Unauthorized access");
+    };
+    ensureCorrectUserOrAdmin(req, res, next);
+  });
+});
+
+
+
+
+
+

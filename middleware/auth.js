@@ -43,9 +43,10 @@ function ensureLoggedIn(req, res, next) {
 }
 
 
+// Middleware to use to make sure admin has access to a feature
 function ensureAdmin(req, res, next) {
   try {
-    if(!res.local.user.is_Admin) {
+    if(!res.locals.user || !res.local.user.is_Admin) {
       throw new UnauthorizedError("User is not an admin", 403)
     }else{
       return next()
@@ -55,9 +56,23 @@ function ensureAdmin(req, res, next) {
   }
 }
 
+// Middleware to make sure either admin or a logged-user can have access to features
+function ensureCorrectUserOrAdmin(req, res, next) {
+  try {
+    const { user } = res.locals;
+    if(!(user && (user.is_admin || user.username === req.params.username))) {
+      throw new UnauthorizedError("Unauthorized access", 401)
+    }
+    return next()
+  }catch(e){
+    return next(e)
+  }
+}
+
 
 module.exports = {
   authenticateJWT,
   ensureLoggedIn,
-  ensureAdmin
+  ensureAdmin,
+  ensureCorrectUserOrAdmin
 };
