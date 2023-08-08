@@ -1,53 +1,25 @@
 {
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
-  "$id": "http://example.com/example.json",
-  "type": "object",
-  "default": {},
-  "title": "Root Schema",
-  "required": [
-      "title",
-      "salary",
-      "equity",
-      "company_handle"
-  ],
-  "properties": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://our.company.com/jobUpdate.schema.json",
+    "type": "object",
+    "properties": {
       "title": {
-          "type": "string",
-          "default": "",
-          "title": "The title Schema",
-          "examples": [
-              "software engineer"
-          ]
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 30
       },
       "salary": {
-          "type": "integer",
-          "default": 0,
-          "title": "The salary Schema",
-          "examples": [
-              5000
-          ]
+        "type": "integer",
+        "minimum": 0
       },
       "equity": {
-          "type": "number",
-          "default": 0.0,
-          "title": "The equity Schema",
-          "examples": [
-              0.72
-          ]
-      },
-      "company_handle": {
-          "type": "string",
-          "default": "",
-          "title": "The company_handle Schema",
-          "examples": [
-              "c2"
-          ]
+        "type": "string",
+        "pattern": "0|(0?\\.[0-9]+)"
       }
-  },
-  "examples": [{
-      "title": "software engineer",
-      "salary": 5000,
-      "equity": 0.72,
-      "company_handle": "c2"
-  }]
-}
+    },
+    "additionalProperties": false,
+    "required": [
+      "title"
+    ]
+  }
+  
