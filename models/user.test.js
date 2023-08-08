@@ -29,7 +29,7 @@ describe("authenticate", function () {
       firstName: "U1F",
       lastName: "U1L",
       email: "u1@email.com",
-      isAdmin: false,
+      is_admin: false,
     });
   });
 
@@ -60,7 +60,7 @@ describe("register", function () {
     firstName: "Test",
     lastName: "Tester",
     email: "test@test.com",
-    isAdmin: false,
+    is_admin: false,
   };
 
   test("works", async function () {
@@ -79,9 +79,9 @@ describe("register", function () {
     let user = await User.register({
       ...newUser,
       password: "password",
-      isAdmin: true,
+      is_admin: true,
     });
-    expect(user).toEqual({ ...newUser, isAdmin: true });
+    expect(user).toEqual({ ...newUser, is_admin: true });
     const found = await db.query("SELECT * FROM users WHERE username = 'new'");
     expect(found.rows.length).toEqual(1);
     expect(found.rows[0].is_admin).toEqual(true);
@@ -116,14 +116,14 @@ describe("findAll", function () {
         firstName: "U1F",
         lastName: "U1L",
         email: "u1@email.com",
-        isAdmin: false,
+        is_admin: false,
       },
       {
         username: "u2",
         firstName: "U2F",
         lastName: "U2L",
         email: "u2@email.com",
-        isAdmin: false,
+        is_admin: false,
       },
     ]);
   });
@@ -139,7 +139,7 @@ describe("get", function () {
       firstName: "U1F",
       lastName: "U1L",
       email: "u1@email.com",
-      isAdmin: false,
+      is_admin: false,
     });
   });
 
@@ -160,7 +160,7 @@ describe("update", function () {
     firstName: "NewF",
     lastName: "NewF",
     email: "new@email.com",
-    isAdmin: true,
+    is_admin: true,
   };
 
   test("works", async function () {
@@ -180,7 +180,7 @@ describe("update", function () {
       firstName: "U1F",
       lastName: "U1L",
       email: "u1@email.com",
-      isAdmin: false,
+      is_admin: false,
     });
     const found = await db.query("SELECT * FROM users WHERE username = 'u1'");
     expect(found.rows.length).toEqual(1);

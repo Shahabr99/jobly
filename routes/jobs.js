@@ -38,8 +38,8 @@ router.get('/', async function(req, res, next) {
       const errs = validator.errors.map(err => err.stack)
       throw new BadRequestError(errs)
     }
-    const jobs = await Job.getAll();
-    return res.json(jobs)
+    const jobs = await Job.findAll();
+    return res.json({jobs: jobs})
   }catch(e) {
     return next(e)
   }

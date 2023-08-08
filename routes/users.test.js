@@ -31,7 +31,7 @@ describe("POST /users", function () {
           lastName: "Last-newL",
           password: "password-new",
           email: "new@email.com",
-          isAdmin: false,
+          is_admin: false,
         })
         .set("authorization", `Bearer ${u1Token}`);
     expect(resp.statusCode).toEqual(201);
@@ -41,7 +41,7 @@ describe("POST /users", function () {
         firstName: "First-new",
         lastName: "Last-newL",
         email: "new@email.com",
-        isAdmin: false,
+        is_admin: false,
       }, token: expect.any(String),
     });
   });
@@ -55,7 +55,7 @@ describe("POST /users", function () {
           lastName: "Last-newL",
           password: "password-new",
           email: "new@email.com",
-          isAdmin: true,
+          is_admin: true,
         })
         .set("authorization", `Bearer ${u1Token}`);
     expect(resp.statusCode).toEqual(201);
@@ -65,7 +65,7 @@ describe("POST /users", function () {
         firstName: "First-new",
         lastName: "Last-newL",
         email: "new@email.com",
-        isAdmin: true,
+        is_admin: true,
       }, token: expect.any(String),
     });
   });
@@ -79,7 +79,7 @@ describe("POST /users", function () {
           lastName: "Last-newL",
           password: "password-new",
           email: "new@email.com",
-          isAdmin: true,
+          is_admin: true,
         });
     expect(resp.statusCode).toEqual(401);
   });
@@ -103,7 +103,7 @@ describe("POST /users", function () {
           lastName: "Last-newL",
           password: "password-new",
           email: "not-an-email",
-          isAdmin: true,
+          is_admin: true,
         })
         .set("authorization", `Bearer ${u1Token}`);
     expect(resp.statusCode).toEqual(400);
@@ -124,21 +124,21 @@ describe("GET /users", function () {
           firstName: "U1F",
           lastName: "U1L",
           email: "user1@user.com",
-          isAdmin: false,
+          is_admin: false,
         },
         {
           username: "u2",
           firstName: "U2F",
           lastName: "U2L",
           email: "user2@user.com",
-          isAdmin: false,
+          is_admin: false,
         },
         {
           username: "u3",
           firstName: "U3F",
           lastName: "U3L",
           email: "user3@user.com",
-          isAdmin: false,
+          is_admin: false,
         },
       ],
     });
@@ -175,7 +175,7 @@ describe("GET /users/:username", function () {
         firstName: "U1F",
         lastName: "U1L",
         email: "user1@user.com",
-        isAdmin: false,
+        is_admin: false,
       },
     });
   });
@@ -210,7 +210,7 @@ describe("PATCH /users/:username", () => {
         firstName: "New",
         lastName: "U1L",
         email: "user1@user.com",
-        isAdmin: false,
+        is_admin: false,
       },
     });
   });
@@ -257,7 +257,7 @@ describe("PATCH /users/:username", () => {
         firstName: "U1F",
         lastName: "U1L",
         email: "user1@user.com",
-        isAdmin: false,
+        is_admin: false,
       },
     });
     const isSuccessful = await User.authenticate("u1", "new-password");

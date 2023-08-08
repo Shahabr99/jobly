@@ -1,5 +1,5 @@
 "use strict";
-const sqlForPartialUpdate = require('../helpers/sql');
+
 const { NotFoundError, BadRequestError } = require("../expressError");
 const db = require("../db.js");
 const Job = require("./job.js");
@@ -18,7 +18,7 @@ afterAll(commonAfterAll);
 
 
 describe("create", function() {
-  const newJob = {company_handle:'c1', title:'SW', salary:5000, equity: "1.0"};
+  const newJob = {title:'SW', salary:5000, equity: "1.0", company_handle:'c1'};
   test("should create a new job", async function() {
     
     const job = await Job.create(newJob);
@@ -206,10 +206,10 @@ describe("remove", function () {
         "SELECT id FROM jobs WHERE id=$1", [testJobIds[0]]);
     expect(res.rows.length).toEqual(0);
   });
-  
+
   test("not found if no such job", async function () {
     try {
-      await Job.remove(0);
+      await Job.remove(1000);
       fail();
     } catch (err) {
       expect(err instanceof NotFoundError).toBeTruthy();
