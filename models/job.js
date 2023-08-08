@@ -1,9 +1,9 @@
 const db = require('../db');
+const {sqlForPartialUpdate} = require('../helpers/sql')
 const { BadRequestError, NotFoundError } = require('../expressError');
 
 
 class Job {
-
   // Creates a job for a company and adds it to the database. Returns the new job.
   static async create({ title, salary, equity, company_handle }) {
     const duplicate = await db.query(`SELECT title, salary, equity from jobs WHERE title=$1 AND salary=$2 AND equity=$3`, [title, salary, equity]);
@@ -15,6 +15,7 @@ class Job {
     RETURNING id, title, salary, equity, company_handle`, [title, salary, equity, company_handle]);
     return result.rows[0]
   }
+
 
   // get all the jobs
   static async findAll({ minSalary, hasEquity, title } = {}) {
