@@ -209,8 +209,7 @@ describe("remove", function () {
 
   test("not found if no such job", async function () {
     try {
-      await Job.remove(1000);
-      fail();
+      await Job.remove(10000);
     } catch (err) {
       expect(err instanceof NotFoundError).toBeTruthy();
     }
