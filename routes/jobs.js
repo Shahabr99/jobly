@@ -39,7 +39,7 @@ router.get('/', async function(req, res, next) {
       throw new BadRequestError(errs)
     }
     const jobs = await Job.findAll();
-    return res.json({jobs: jobs})
+    return res.json({jobs})
   }catch(e) {
     return next(e)
   }
@@ -67,8 +67,8 @@ router.patch("/:id", ensureAdmin, async function(req, res, next) {
       const errList = validator.errors.map(err => err.stack);
       throw new BadRequestError(errList)
     }
-    const updatedJob = await Job.update(id, req.body);
-    return res.json({updatedJob});
+    const job = await Job.update(id, req.body);
+    return res.json({job});
   }catch(e){
     return next(e)
   }
